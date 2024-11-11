@@ -32,3 +32,4 @@
 *.app
 lab?/main
 *.dSYM
+*.sav

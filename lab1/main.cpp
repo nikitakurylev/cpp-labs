@@ -41,6 +41,19 @@ int main()
     int total_hungry_percentage = 0;
     int year = 1;
 
+    fstream in("save.sav");
+    if (in.is_open())
+    {
+        cout << "Найдено сохранение. Желаете ли вы продолжить игру? (y/n)" << endl;
+        if (cin.get() == 'y')
+        {
+            in >> population >> wheat >> area >> hungry_villagers >> harvest >> newcomers >> plague >> harvest_rate >> rat_damage >> total_hungry_percentage >> year;
+            cout << "Игра загружена" << endl;
+        }
+        cin.get();
+    }
+    in.close();
+
     while (year <= 10)
     {
         cout << "Введите q, чтобы выйти, или нажмите клавишу 'Ввод', чтобы продолжить ";
@@ -205,6 +218,15 @@ int main()
             cout << "Слишком много жителей умерло от голода!" << endl;
             break;
         }
+
+        ofstream out("save.sav");
+        if (out.is_open())
+        {
+            out << population << ' ' << wheat << ' ' << area << ' ' << hungry_villagers << ' ' << harvest << ' ' << newcomers << ' ' << plague << ' ' << harvest_rate << ' ' << rat_damage << ' ' << total_hungry_percentage << ' ' << year;
+            cout << "Игра сохранена" << endl;
+        }
+        out.close();
+
         cin.get();
     }
 
@@ -222,6 +244,8 @@ int main()
              << "но многие хотели бы увидеть вас во главе города снова" << endl;
     else
         cout << "Фантастика! Карл Великий, Дизраэли и Джефферсон вместе не справились бы лучше" << endl;
+
+    remove("save.sav");
 
     return 0;
 }
