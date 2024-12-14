@@ -41,7 +41,7 @@ public:
     class ConstArrayIterator final
     {
     public:
-        ConstArrayIterator(T *pointer, Array<T> &array, int direction);
+        ConstArrayIterator(T *pointer, const Array<T> &array, int direction);
 
         const T &get() const;
         void next();
@@ -49,7 +49,7 @@ public:
 
     private:
         T *pointer_;
-        Array<T> &array_;
+        const Array<T> &array_;
         int direction_;
     };
 

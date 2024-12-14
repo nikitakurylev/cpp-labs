@@ -2,7 +2,6 @@
 
 #include "Array.h"
 #include <utility>
-#include <cstdlib>
 #include <type_traits>
 
 template <typename T>
@@ -20,7 +19,9 @@ Array<T>::Array(int capacity) : capacity_(capacity), size_(0)
 template <typename T>
 Array<T>::Array(const Array<T> &other) : size_(other.size_), capacity_(other.capacity_)
 {
-	destroy();
+	array_ = static_cast<T*>(malloc(sizeof(T) * capacity_));
+	for (int i = 0; i < size_; i++)
+		new(&array_[i]) T(other.array_[i]);
 }
 
 template <typename T>
@@ -132,30 +133,6 @@ Array<T> &Array<T>::operator=(Array<T> &&other) noexcept
 }
 
 template <typename T>
-typename Array<T>::ArrayIterator Array<T>::iterator()
-{
-	return Array<T>::ArrayIterator(array_, *this, 1);
-}
-
-template <typename T>
-typename Array<T>::ConstArrayIterator Array<T>::iterator() const
-{
-	return Array<T>::ConstArrayIterator(array_, *this, 1);
-}
-
-template <typename T>
-typename Array<T>::ArrayIterator Array<T>::reverseIterator()
-{
-	return Array<T>::ArrayIterator(array_ + size_ - 1, *this, -1);
-}
-
-template <typename T>
-typename Array<T>::ConstArrayIterator Array<T>::reverseIterator() const
-{
-	return Array<T>::ConstArrayIterator(array_ + size_ - 1, *this, -1);
-}
-
-template <typename T>
 void Array<T>::clear()
 {
 	array_ = nullptr;
@@ -189,6 +166,18 @@ template <typename T>
 Array<T>::ArrayIterator::ArrayIterator(T *pointer, Array<T> &array, int direction) : pointer_(pointer), array_(array), direction_(direction) {}
 
 template <typename T>
+typename Array<T>::ArrayIterator Array<T>::iterator()
+{
+	return Array<T>::ArrayIterator(array_, *this, 1);
+}
+
+template <typename T>
+typename Array<T>::ArrayIterator Array<T>::reverseIterator()
+{
+	return Array<T>::ArrayIterator(array_ + size_ - 1, *this, -1);
+}
+
+template <typename T>
 const T &Array<T>::ArrayIterator::get() const
 {
 	return *pointer_;
@@ -213,7 +202,19 @@ bool Array<T>::ArrayIterator::hasNext() const
 }
 
 template <typename T>
-Array<T>::ConstArrayIterator::ConstArrayIterator(T *pointer, Array<T> &array, int direction) : pointer_(pointer), array_(array), direction_(direction) {}
+Array<T>::ConstArrayIterator::ConstArrayIterator(T *pointer, const Array<T> &array, int direction) : pointer_(pointer), array_(array), direction_(direction) {}
+
+template <typename T>
+typename Array<T>::ConstArrayIterator Array<T>::iterator() const
+{
+	return Array<T>::ConstArrayIterator(array_, *this, 1);
+}
+
+template <typename T>
+typename Array<T>::ConstArrayIterator Array<T>::reverseIterator() const
+{
+	return Array<T>::ConstArrayIterator(array_ + size_ - 1, *this, -1);
+}
 
 template <typename T>
 const T &Array<T>::ConstArrayIterator::get() const
