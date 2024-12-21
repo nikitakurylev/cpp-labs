@@ -93,3 +93,23 @@ TEST(QuickSortInt, One)
 	ASSERT_NO_THROW(qsort(a, a + N, [](int a, int b)
 						  { return a < b; }));
 }
+
+TEST(QuickSortString, Reverse)
+{
+	const int N = 5;
+	const std::string strings[N] {"Alice", "Bob", "Chris", "Ivan", "Nikita"};
+	std::string stringsReverse[N];
+
+	for (int i = 1; i <= N; i++)
+		new (&stringsReverse[i - 1]) std::string(strings[N - i]);
+
+    std::string* ptr_to_arr = stringsReverse;
+
+	qsort(stringsReverse, stringsReverse + N - 1, [](std::string a, std::string b)
+		  { return a[0] < b[0]; });
+
+	for (int i = 0; i < N; i++)
+	{
+		ASSERT_EQ(stringsReverse[i], strings[i]);
+	}
+}
