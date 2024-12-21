@@ -5,9 +5,9 @@
 #include <type_traits>
 
 template <typename T>
-Array<T>::Array() : capacity_(0), size_(0)
+Array<T>::Array() : capacity_(16), size_(0)
 {
-	array_ = static_cast<T*>(malloc(sizeof(T) * 16));
+	array_ = static_cast<T*>(malloc(sizeof(T) * capacity_));
 }
 
 template <typename T>
