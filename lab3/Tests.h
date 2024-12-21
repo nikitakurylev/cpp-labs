@@ -30,7 +30,7 @@ TEST(QuickSortInt, Random)
 		a[i] = rand();
 
 	qsort(a, a + N, [](int a, int b)
-		  { return a < b; });
+		  { return a < b; }, 60);
 
 	for (int i = 1; i < N; i++)
 	{
@@ -47,7 +47,7 @@ TEST(QuickSortInt, Worst)
 		a[i] = N - i;
 
 	qsort(a, a + N, [](int a, int b)
-		  { return a < b; });
+		  { return a < b; }, 60);
 
 	for (int i = 1; i < N; i++)
 	{
@@ -64,7 +64,7 @@ TEST(QuickSortInt, Sorted)
 		a[i] = i;
 
 	qsort(a, a + N, [](int a, int b)
-		  { return a < b; });
+		  { return a < b; }, 60);
 
 	for (int i = 1; i < N; i++)
 	{
@@ -79,7 +79,7 @@ TEST(QuickSortInt, Empty)
 	int *a = new int[N];
 
 	ASSERT_NO_THROW(qsort(a, a + N, [](int a, int b)
-						  { return a < b; }));
+						  { return a < b; }, 60));
 }
 
 TEST(QuickSortInt, One)
@@ -91,7 +91,7 @@ TEST(QuickSortInt, One)
 		a[i] = i;
 
 	ASSERT_NO_THROW(qsort(a, a + N, [](int a, int b)
-						  { return a < b; }));
+						  { return a < b; }, 60));
 }
 
 TEST(QuickSortString, Reverse)
